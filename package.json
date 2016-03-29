@@ -13,6 +13,7 @@
     "co-with-promise": "^4.6.0",
     "emmiter": "0.0.1",
     "end-of-stream": "^1.1.0",
+    "es6-collections": "^0.5.6",
     "es6-weak-map": "^2.0.1",
     "function-done": "^2.1.0",
     "last-run": "^1.1.0",
