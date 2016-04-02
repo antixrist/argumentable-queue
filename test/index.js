@@ -1,32 +1,39 @@
-var slice     = require('sliced'),
-    Immutable = require('immutable');
+var _         = require('lodash'),
+    slice     = require('sliced'),
+    hash      = require('object-hash'),
+    logTime   = require('../lib/log-time');
 
 (function () {
   var args = slice(arguments);
-  var map = new Map();
-  //var imMap = Immutable.Map();
-  //imMap = imMap.set(Immutable.List(args), 'listofone');
-  //console.log('imMap.get(Immutable.List(args))', imMap.get(Immutable.List(args)));
+  var arr = [];
 
-  var getMapKey = function (args) {
-    return Immutable.List(args);
-    return new Set(args);
+  logTime('hashing', function () {
+    var hashValue;
+
+    hashValue = {
+      index: 1,
+      args: args
+    };
+    //hashValue = Immutable.List();
+
+    console.log('hashValue', hashValue);
+    console.log('hash', hash(hashValue));
+
+    return true;
+  });
+
+  return;
+
+  arr.push({
+    index: 1,
+    args: args
+  });
+
+  var returnArgs = function returnArgs () {
+    return slice(arguments);
   };
 
-  //map.set(getMapKey(args), 'asd');
-
-  console.log('getMapKey(args)', getMapKey(args));
-  console.log('!! getMapKey(args) == getMapKey(args)', getMapKey(args) == getMapKey(args));
-  console.log('Object.is(getMapKey(args), getMapKey(args))', Object.is(getMapKey(args), getMapKey(args)));
-  console.log('map.get(getMapKey(args))', map.get(getMapKey(args)));
-
-  function test () {
-    var _args = slice(arguments);
-    return map.get(getMapKey(_args));
-  }
-
-  console.log('test.apply(null, args)', test.apply(null, args));
-  console.log('test.apply(null, args) === test.apply(null, args)', test.apply(null, args) === test.apply(null, args));
+  console.log(_.find(arr, {args: returnArgs(args)}));
 
 })({qwe: 123}, 'zxc', function (err, res) {
   console.log('its callback');
