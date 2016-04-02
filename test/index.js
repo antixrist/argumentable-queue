@@ -35,6 +35,6 @@ var _         = require('lodash'),
 
   console.log(_.find(arr, {args: returnArgs(args)}));
 
-})({qwe: 123}, 'zxc', function (err, res) {
+})({qwe: 123, method: function () { return null; }}, 'zxc', function (err, res) {
   console.log('its callback');
 });
