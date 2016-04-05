@@ -17,6 +17,7 @@
     "es6-weak-map": "^2.0.1",
     "function-done": "^2.1.0",
     "humanize": "0.0.9",
+    "keypather": "^2.0.0",
     "last-run": "^1.1.0",
     "lodash": "^4.6.1",
     "next-tick": "^0.2.2",
