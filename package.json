@@ -11,7 +11,7 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "co-with-promise": "^4.6.0",
-    "emmiter": "^0.0.1",
+    "emmiter": "0.0.3",
     "end-of-stream": "^1.1.0",
     "es6-collections": "^0.5.6",
     "es6-weak-map": "^2.0.1",
