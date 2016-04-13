@@ -3,6 +3,45 @@ var _         = require('lodash'),
     hash      = require('object-hash'),
     logTime   = require('../lib/log-time');
 
+
+var calcTimeForNextTaskLastTime = null;
+var calcTimeForNextTaskValue    = null;
+
+var calcTimeForNextTask = function calcTimeForNextTask () {
+  return 1000;
+};
+
+var getTimeForNextTask = function getTimeForNextTask () {
+  var time;
+  var now = Date.now();
+
+  // кэшируем вычисление оставшегося времени
+  if (!!calcTimeForNextTaskLastTime && now - calcTimeForNextTaskLastTime < calcTimeForNextTaskValue) {
+    console.log('cached');
+    time = calcTimeForNextTaskValue;
+  } else {
+    console.log('recalc');
+    time = calcTimeForNextTask();
+    calcTimeForNextTaskValue    = time;
+    calcTimeForNextTaskLastTime = now;
+  }
+
+  return time;
+};
+
+setInterval(function () {
+  getTimeForNextTask();
+}, 200);
+
+
+
+
+
+
+
+
+return;
+
 (function () {
   var args = slice(arguments);
   var arr = [];
