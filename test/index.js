@@ -2,21 +2,27 @@ var Queue   = require('../lib'),
     Promise = require('bluebird'),
     logTime = require('../lib/log-time');
 
-var q = new Queue(function () {
-  console.log.apply(console, ['run task with args:'].concat(arguments));
+var q = new Queue(function (obj, done) {
+  //console.log('========= QUEUE fn =========');
+  //console.log.apply(console, ['args:'].concat(arguments));
+  //console.log('========= //QUEUE fn =========');
+
+  //done(new Error('From callback'));
 
   return Promise
-    .delay(150)
+    .delay(50)
     .then(function () {
+      //return Promise.reject(new Error('From promise'));
       throw new Error('its error');
     })
     .then(function () {
-      return 'asdasdasd';
+      return 'From promise';
     })
   ;
 });
 
 q.setOptions({
+  history: true,
   defaultPriority: 9000,
   concurrency: function () {
     return '10';
@@ -24,43 +30,54 @@ q.setOptions({
   throttle: function () {
     return 200 + ' ';
   },
-  debounce: ' '+ 300
+  //debounce: ' '+ 300
 });
 
-q.on('task:add', function (task) {
-  console.log('on task:add', task);
-  console.log('============');
-});
-
-q.on('task:start', function (task) {
-  console.log('on task:start', arguments);
-  console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
-  console.log('============');
-});
+//q.on('task:add', function (task) {
+//  console.log('========= EVENT: task:add =========');
+//  console.log.apply(console, ['args:'].concat(arguments));
+//  console.log('========= //EVENT: task:add =========');
+//});
+//
+//q.on('task:start', function (task) {
+//  console.log('========= EVENT: task:start =========');
+//  console.log.apply(console, ['args:'].concat(arguments));
+//  //console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
+//  console.log('========= //EVENT: task:start =========');
+//});
+//
 
 q.on('task:done', function (err, result, task) {
-  console.log('on task:done', arguments);
-  console.log('q.tasks', q.tasks);
-  console.log('q.priorities', q.priorities);
-  console.log('============');
+  console.log('========= EVENT: task:done =========');
+  console.log('err, result', err, result);
+  console.log('task.time', task.time);
+  //console.log.apply(console, ['args:'].concat(arguments));
+  ////console.log('q.tasks', q.tasks);
+  ////console.log('q.priorities', q.priorities);
+  //console.log('========= //EVENT: task:done =========');
 });
 
 q.on('empty', function () {
-  console.log('on empty. size:', this.size);
-  console.log('q.tasks', q.tasks);
-  console.log('q.priorities', q.priorities);
+  console.log('========= EVENT: empty =========');
+  console.log('size:', this.size);
+  console.log('finishedCount:', this.finishedCount);
+  console.log('========= //EVENT: empty =========');
 });
 
 
 var number = 0;
-var max = 2;
+var max = 20;
 
 var iterable = function iterable () {
   setImmediate(function () {
     number++;
 
     q.add({index: number});
-    console.log('========================');
+    q.add({index: ++number});
+    q.add({index: ++number});
+    q.add({index: ++number});
+    q.add({index: ++number});
+    //console.log('========================');
 
     //q.update({
     //  //priority: q.options.defaultPriority - number
