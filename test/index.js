@@ -32,8 +32,16 @@ q.on('task:add', function (task) {
   console.log('============');
 });
 
+q.on('task:start', function (task) {
+  console.log('on task:start', arguments);
+  console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
+  console.log('============');
+});
+
 q.on('task:done', function (err, result, task) {
   console.log('on task:done', arguments);
+  console.log('q.tasks', q.tasks);
+  console.log('q.priorities', q.priorities);
   console.log('============');
 });
 
@@ -112,7 +120,7 @@ return;
 
 
 var assert = require('assert');
-var Promise = require('bluebird');
+//var Promise = require('bluebird');
 
 
 describe("Mocha Async Test", function(){
