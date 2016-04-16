@@ -6,7 +6,7 @@ var q = new Queue(function () {
   console.log.apply(console, ['run task with args:'].concat(arguments));
 
   return Promise
-    .delay(2000)
+    .delay(150)
     .then(function () {
       throw new Error('its error');
     })
@@ -47,6 +47,8 @@ q.on('task:done', function (err, result, task) {
 
 q.on('empty', function () {
   console.log('on empty. size:', this.size);
+  console.log('q.tasks', q.tasks);
+  console.log('q.priorities', q.priorities);
 });
 
 
