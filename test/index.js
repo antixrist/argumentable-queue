@@ -2,7 +2,7 @@ var Queue   = require('../lib'),
     logTime = require('../lib/log-time');
 
 var q = new Queue(function () {
-  console.log.apply(console, ['add new task with args:'].concat(arguments));
+  console.log.apply(console, ['run task with args:'].concat(arguments));
 
   return true;
 });
