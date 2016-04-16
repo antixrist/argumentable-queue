@@ -10,7 +10,7 @@ var q = new Queue(function (obj, done) {
   //done(new Error('From callback'));
 
   return Promise
-    .delay(500)
+    .delay(1000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -27,9 +27,9 @@ q.setOptions({
   concurrency: function () {
     return '10';
   },
-  //throttle: function () {
-  //  return 200 + ' ';
-  //},
+  throttle: function () {
+    return 200 + ' ';
+  },
   //debounce: ' '+ 300
 });
 
@@ -46,15 +46,11 @@ q.setOptions({
 //  console.log('========= //EVENT: task:start =========');
 //});
 
-var time = Date.now();
+//var time = Date.now();
 q.on('task:done', function (err, result, task) {
   console.log('========= EVENT: task:done =========');
   console.log('err, result', err, result);
-  console.log('task.time', task.time, '; index:', result.index);
-  console.log('elapsed time', Date.now() - time);
-  console.log('runnedCount', this.runnedCount);
-  time = Date.now();
-  //console.log.apply(console, ['args:'].concat(arguments));
+  console.log('task.time', task.time);
   ////console.log('q.tasks', q.tasks);
   ////console.log('q.priorities', q.priorities);
   console.log('========= //EVENT: task:done =========');
