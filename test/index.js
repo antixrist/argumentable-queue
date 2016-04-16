@@ -1,10 +1,15 @@
 var Queue   = require('../lib'),
+    Promise = require('bluebird'),
     logTime = require('../lib/log-time');
 
 var q = new Queue(function () {
   console.log.apply(console, ['run task with args:'].concat(arguments));
 
-  return true;
+  return Promise
+    .delay(2000)
+    .then(function () {
+      return 'asdasdasd';
+    });
 });
 
 q.setOptions({
