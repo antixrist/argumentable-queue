@@ -3,16 +3,16 @@ var Queue   = require('../lib'),
 
 var q = new Queue(function () {
   console.log.apply(console, ['add new task with args:'].concat(arguments));
+
+  return true;
 });
 
 q.setOptions({
   defaultPriority: 9000,
   concurrency: function () {
-    console.log('concurrency this instanceof Queue', this instanceof Queue);
     return '10';
   },
   throttle: function () {
-    console.log('throttle this instanceof Queue', this instanceof Queue);
     return 200 + ' ';
   },
   debounce: ' '+ 300
@@ -23,46 +23,56 @@ q.on('add', function (task) {
   console.log('============');
 });
 
+q.on('done', function (err, result, task) {
+  console.log('on done', arguments);
+  console.log('============');
+});
+
+q.on('empty', function () {
+  console.log('on empty');
+  console.log('============');
+});
+
 
 var number = 0;
 var max = 1;
 
-logTime(max +' iterable', function (cb) {
-  var iterable = function iterable () {
-    setImmediate(function () {
-      number++;
+//logTime(max +' iterable', function (cb) {
+//});
 
-      q.add({
-        index: number
-      }, 'qwe');
+var iterable = function iterable () {
+  setImmediate(function () {
+    number++;
 
-      q.update({
-        //priority: q.options.defaultPriority - number
-      }, { index: number }, 'qwe');
+    q.add({
+      index: number
+    }, 'qwe');
 
-      if (number < max) {
-        if (number % 100 == 0) {
-          console.log(number);
-        }
-        iterable();
-      } else {
-        //q.tasks.forEach(function (value, key) {
-        //  console.log('key:', key);
-        //  console.log('value:', value);
-        //  console.log('============');
-        //});
+    q.update({
+      //priority: q.options.defaultPriority - number
+    }, { index: number }, 'qwe');
 
-        console.log('q.tasks', q.tasks);
-        console.log('q.size', q.size);
-        q.clear();
-        //console.log('q.tasks', q.tasks);
-
-        cb();
+    if (number < max) {
+      if (number % 100 == 0) {
+        console.log(number);
       }
-    });
-  } ();
-});
+      iterable();
+    } else {
+      //q.tasks.forEach(function (value, key) {
+      //  console.log('key:', key);
+      //  console.log('value:', value);
+      //  console.log('============');
+      //});
 
+      //console.log('q.tasks', q.tasks);
+      console.log('q.size', q.size);
+      //q.clear();
+      //console.log('q.tasks', q.tasks);
+
+      //cb();
+    }
+  });
+} ();
 
 
 return;
