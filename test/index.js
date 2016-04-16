@@ -29,28 +29,23 @@ q.on('done', function (err, result, task) {
 });
 
 q.on('empty', function () {
-  console.log('on empty');
-  console.log('============');
+  console.log('on empty. size:', this.size);
 });
 
 
 var number = 0;
 var max = 1;
 
-//logTime(max +' iterable', function (cb) {
-//});
-
 var iterable = function iterable () {
   setImmediate(function () {
     number++;
 
-    q.add({
-      index: number
-    }, 'qwe');
+    q.add({index: number});
+    console.log('========================');
 
-    q.update({
-      //priority: q.options.defaultPriority - number
-    }, { index: number }, 'qwe');
+    //q.update({
+    //  //priority: q.options.defaultPriority - number
+    //}, { index: number }, 'qwe');
 
     if (number < max) {
       if (number % 100 == 0) {
@@ -65,7 +60,6 @@ var iterable = function iterable () {
       //});
 
       //console.log('q.tasks', q.tasks);
-      console.log('q.size', q.size);
       //q.clear();
       //console.log('q.tasks', q.tasks);
 
