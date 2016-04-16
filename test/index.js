@@ -27,10 +27,10 @@ q.setOptions({
   concurrency: function () {
     return '10';
   },
-  throttle: function () {
-    return 200 + ' ';
-  },
-  //debounce: ' '+ 300
+  //throttle: function () {
+  //  return 200 + ' ';
+  //},
+  debounce: ' '+ 100
 });
 
 //q.on('task:add', function (task) {
@@ -39,14 +39,19 @@ q.setOptions({
 //  console.log('========= //EVENT: task:add =========');
 //});
 
-//q.on('task:start', function (task) {
-//  console.log('========= EVENT: task:start =========');
-//  console.log.apply(console, ['args:'].concat(arguments));
+var throttle = null;
+var debounce = null;
+q.on('task:start', function (task) {
+  //console.log('========= EVENT: task:start =========');
+  //throttle = Date.now() - (throttle || Date.now());
+  //console.log('--throttle', throttle, '--');
+  //throttle = Date.now();
+
+//  console.log('task', task);
 //  //console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
 //  console.log('========= //EVENT: task:start =========');
-//});
+});
 
-//var time = Date.now();
 q.on('task:done', function (err, result, task) {
   console.log('========= EVENT: task:done =========');
   console.log('err, result', err, result);
