@@ -53,7 +53,7 @@ q.on('empty', function () {
 
 
 var number = 0;
-var max = 1;
+var max = 2;
 
 var iterable = function iterable () {
   setImmediate(function () {
