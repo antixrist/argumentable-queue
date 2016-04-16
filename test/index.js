@@ -10,13 +10,13 @@ var q = new Queue(function (obj, done) {
   //done(new Error('From callback'));
 
   return Promise
-    .delay(50)
+    .delay(500)
+    //.then(function () {
+    //  //return Promise.reject(new Error('From promise'));
+    //  throw new Error('its error');
+    //})
     .then(function () {
-      //return Promise.reject(new Error('From promise'));
-      throw new Error('its error');
-    })
-    .then(function () {
-      return 'From promise';
+      return obj;
     })
   ;
 });
@@ -27,9 +27,9 @@ q.setOptions({
   concurrency: function () {
     return '10';
   },
-  throttle: function () {
-    return 200 + ' ';
-  },
+  //throttle: function () {
+  //  return 200 + ' ';
+  //},
   //debounce: ' '+ 300
 });
 
@@ -38,23 +38,26 @@ q.setOptions({
 //  console.log.apply(console, ['args:'].concat(arguments));
 //  console.log('========= //EVENT: task:add =========');
 //});
-//
+
 //q.on('task:start', function (task) {
 //  console.log('========= EVENT: task:start =========');
 //  console.log.apply(console, ['args:'].concat(arguments));
 //  //console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
 //  console.log('========= //EVENT: task:start =========');
 //});
-//
 
+var time = Date.now();
 q.on('task:done', function (err, result, task) {
   console.log('========= EVENT: task:done =========');
   console.log('err, result', err, result);
-  console.log('task.time', task.time);
+  console.log('task.time', task.time, '; index:', result.index);
+  console.log('elapsed time', Date.now() - time);
+  console.log('runnedCount', this.runnedCount);
+  time = Date.now();
   //console.log.apply(console, ['args:'].concat(arguments));
   ////console.log('q.tasks', q.tasks);
   ////console.log('q.priorities', q.priorities);
-  //console.log('========= //EVENT: task:done =========');
+  console.log('========= //EVENT: task:done =========');
 });
 
 q.on('empty', function () {
@@ -73,10 +76,10 @@ var iterable = function iterable () {
     number++;
 
     q.add({index: number});
-    q.add({index: ++number});
-    q.add({index: ++number});
-    q.add({index: ++number});
-    q.add({index: ++number});
+    //q.add({index: ++number});
+    //q.add({index: ++number});
+    //q.add({index: ++number});
+    //q.add({index: ++number});
     //console.log('========================');
 
     //q.update({
