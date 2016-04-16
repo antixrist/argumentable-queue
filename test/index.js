@@ -8,8 +8,12 @@ var q = new Queue(function () {
   return Promise
     .delay(2000)
     .then(function () {
+      throw new Error('its error');
+    })
+    .then(function () {
       return 'asdasdasd';
-    });
+    })
+  ;
 });
 
 q.setOptions({
@@ -23,13 +27,13 @@ q.setOptions({
   debounce: ' '+ 300
 });
 
-q.on('add', function (task) {
-  console.log('on add', task);
+q.on('task:add', function (task) {
+  console.log('on task:add', task);
   console.log('============');
 });
 
-q.on('done', function (err, result, task) {
-  console.log('on done', arguments);
+q.on('task:done', function (err, result, task) {
+  console.log('on task:done', arguments);
   console.log('============');
 });
 
