@@ -1,3 +1,6 @@
+//require('fs').writeFileSync(require('path').join(__dirname, 'tmp.txt'), (new Array(1000000)).join('*'));
+//return;
+
 var Queue   = require('../lib'),
     Promise = require('bluebird'),
     logTime = require('../lib/log-time');
@@ -25,12 +28,12 @@ q.setOptions({
   history: true,
   defaultPriority: 9000,
   concurrency: function () {
-    return '10';
+    return '100';
   },
-  //throttle: function () {
-  //  return 200 + ' ';
-  //},
-  debounce: ' '+ 100
+  throttle: function () {
+    return 30 + ' ';
+  },
+  //debounce: ' '+ 100
 });
 
 //q.on('task:add', function (task) {
@@ -39,26 +42,23 @@ q.setOptions({
 //  console.log('========= //EVENT: task:add =========');
 //});
 
-var throttle = null;
-var debounce = null;
-q.on('task:start', function (task) {
-  //console.log('========= EVENT: task:start =========');
-  //throttle = Date.now() - (throttle || Date.now());
-  //console.log('--throttle', throttle, '--');
-  //throttle = Date.now();
-
+//q.on('task:start', function (task) {
+//  console.log('========= EVENT: task:start =========');
 //  console.log('task', task);
-//  //console.log('q.byKeyStatusOf(task.key)', q.byKeyStatusOf(task.key));
 //  console.log('========= //EVENT: task:start =========');
-});
+//});
 
 q.on('task:done', function (err, result, task) {
-  console.log('========= EVENT: task:done =========');
-  console.log('err, result', err, result);
-  console.log('task.time', task.time);
-  ////console.log('q.tasks', q.tasks);
-  ////console.log('q.priorities', q.priorities);
-  console.log('========= //EVENT: task:done =========');
+  //if (task.index % 100 == 0) {
+    console.log('#'+ task.index +';', 'time:', task.time);
+    console.log('inProgress:', q.runnedCount +';', 'all:', q.size);
+  //}
+//  console.log('========= EVENT: task:done =========');
+//  console.log('err, result', err, result);
+//  console.log('task.time', task.time);
+//  ////console.log('q.tasks', q.tasks);
+//  ////console.log('q.priorities', q.priorities);
+//  console.log('========= //EVENT: task:done =========');
 });
 
 q.on('empty', function () {
@@ -70,13 +70,22 @@ q.on('empty', function () {
 
 
 var number = 0;
-var max = 20;
+var batch = 10;
+var max = 500;
 
+var getBigData = function getBigData () {
+  //return [];
+  return (new Array(1000000)).join('*');
+};
+
+var i;
 var iterable = function iterable () {
   setImmediate(function () {
-    number++;
+    batch = batch || 1;
 
-    q.add({index: number});
+    for (i=0; i < batch; i++); {
+      q.add({index: ++number, arr: getBigData()});
+    }
     //q.add({index: ++number});
     //q.add({index: ++number});
     //q.add({index: ++number});
@@ -88,9 +97,9 @@ var iterable = function iterable () {
     //}, { index: number }, 'qwe');
 
     if (number < max) {
-      if (number % 100 == 0) {
-        console.log(number);
-      }
+      //if (number % 100 == 0) {
+      //  console.log(number);
+      //}
       iterable();
     } else {
       //q.tasks.forEach(function (value, key) {
