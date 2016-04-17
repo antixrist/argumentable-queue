@@ -1,37 +1,21 @@
 {
-  "name": "queue13",
+  "name": "argumentable-queue",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha test/index.js"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "antixrist",
+  "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.3.4",
     "co-with-promise": "^4.6.0",
     "emmiter": "0.0.3",
     "end-of-stream": "^1.1.0",
-    "es6-collections": "^0.5.6",
-    "es6-weak-map": "^2.0.1",
     "extend": "^3.0.0",
-    "function-done": "^2.1.0",
-    "humanize": "0.0.9",
     "keypather": "^2.0.0",
-    "last-run": "^1.1.0",
     "lodash": "^4.6.1",
-    "mem": "^0.1.1",
-    "mocha": "^2.4.5",
-    "next-tick": "^0.2.2",
     "object-hash": "^1.1.2",
     "once": "^1.3.3",
     "setasap": "^1.1.0",
     "sliced": "^1.0.1",
     "stream-exhaust": "^1.0.1"
-  },
-  "devDependencies": {
-    "enqueue": "^1.0.2",
-    "queue-universal": "0.0.8"
   }
 }
