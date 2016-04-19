@@ -28,9 +28,9 @@ var q = new Queue(function (obj, done) {
 q.setOptions({
   //history: true,
   defaultPriority: 9000,
-  //concurrency: function () {
-  //  return '10';
-  //},
+  concurrency: function () {
+    return '1';
+  },
   //throttle: function () {
   //  return 30 + ' ';
   //},
