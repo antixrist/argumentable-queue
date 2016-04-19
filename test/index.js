@@ -29,7 +29,7 @@ q.setOptions({
   //history: true,
   defaultPriority: 9000,
   concurrency: function () {
-    return '1';
+    return '10';
   },
   //throttle: function () {
   //  return 30 + ' ';
