@@ -13,7 +13,8 @@ var q = new Queue(function (obj, done) {
   //done(new Error('From callback'));
 
   return Promise
-    .delay(1000)
+    .resolve()
+    .delay(10)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -25,15 +26,15 @@ var q = new Queue(function (obj, done) {
 });
 
 q.setOptions({
-  history: true,
+  //history: true,
   defaultPriority: 9000,
-  concurrency: function () {
-    return '100';
-  },
-  throttle: function () {
-    return 30 + ' ';
-  },
-  //debounce: ' '+ 100
+  //concurrency: function () {
+  //  return '10';
+  //},
+  //throttle: function () {
+  //  return 30 + ' ';
+  //},
+  debounce: ' '+ 300
 });
 
 //q.on('task:add', function (task) {
@@ -42,23 +43,26 @@ q.setOptions({
 //  console.log('========= //EVENT: task:add =========');
 //});
 
-//q.on('task:start', function (task) {
-//  console.log('========= EVENT: task:start =========');
-//  console.log('task', task);
-//  console.log('========= //EVENT: task:start =========');
-//});
+q.on('task:start', function (task) {
+  console.log('START #'+ task.index +';', 'start:', task.start);
+  console.log('inProgress:', q.runnedCount +';', 'all:', q.size);
+  //console.log('========= EVENT: task:start =========');
+  //console.log('task', task);
+  //console.log('========= //EVENT: task:start =========');
+});
 
 q.on('task:done', function (err, result, task) {
-  //if (task.index % 100 == 0) {
-    console.log('#'+ task.index +';', 'time:', task.time);
-    console.log('inProgress:', q.runnedCount +';', 'all:', q.size);
-  //}
-//  console.log('========= EVENT: task:done =========');
-//  console.log('err, result', err, result);
-//  console.log('task.time', task.time);
-//  ////console.log('q.tasks', q.tasks);
-//  ////console.log('q.priorities', q.priorities);
-//  console.log('========= //EVENT: task:done =========');
+  console.log('DONE. lastTaskTimes.end', q.lastTaskTimes.end);
+//  //if (task.index % 100 == 0) {
+//    console.log('#'+ task.index +';', 'time:', task.time);
+//    console.log('inProgress:', q.runnedCount +';', 'all:', q.size);
+//  //}
+////  console.log('========= EVENT: task:done =========');
+////  console.log('err, result', err, result);
+////  console.log('task.time', task.time);
+////  ////console.log('q.tasks', q.tasks);
+////  ////console.log('q.priorities', q.priorities);
+////  console.log('========= //EVENT: task:done =========');
 });
 
 q.on('empty', function () {
@@ -70,7 +74,7 @@ q.on('empty', function () {
 
 
 var number = 0;
-var batch = 10;
+var batch = 0;
 var max = 500;
 
 var getBigData = function getBigData () {
@@ -81,9 +85,9 @@ var getBigData = function getBigData () {
 var i;
 var iterable = function iterable () {
   setImmediate(function () {
-    batch = batch || 1;
+    var _batch = batch || 1;
 
-    for (i=0; i < batch; i++); {
+    for (i=0; i < _batch; i++); {
       q.add({index: ++number, arr: getBigData()});
     }
     //q.add({index: ++number});
