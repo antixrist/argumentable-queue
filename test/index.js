@@ -3,7 +3,13 @@
 
 var Queue   = require('../lib'),
     Promise = require('bluebird'),
-    logTime = require('../lib/log-time');
+    logTime = require('../lib/log-time'),
+    chalk   = require('chalk'),
+    blue = chalk.blue,
+    green = chalk.green
+;
+
+var _task;
 
 var q = new Queue(function (obj, done) {
   //console.log('========= QUEUE fn =========');
@@ -34,7 +40,7 @@ q.setOptions({
   //throttle: function () {
   //  return 30 + ' ';
   //},
-  debounce: ' '+ 1000
+  debounce: ' '+ 500
 });
 
 //q.on('task:add', function (task) {
@@ -44,15 +50,20 @@ q.setOptions({
 //});
 
 q.on('task:start', function (task) {
-  console.log('START #'+ task.index +';', 'start:', task.start);
-  console.log('inProgress:', q.pendingCount +';', 'all:', q.size);
+  if (task.args[0].index == 5) {
+    console.log('5 task', task == _task);
+    console.log('5 task', task.args == _task.args);
+  }
+
+  console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
+  console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(q.size));
   //console.log('========= EVENT: task:start =========');
   //console.log('task', task);
   //console.log('========= //EVENT: task:start =========');
 });
 
 q.on('task:done', function (err, result, task) {
-  console.log('DONE. lastTaskTimes.end', q.lastTaskTimes.end);
+  console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
 //    console.log('inProgress:', q.pendingCount +';', 'all:', q.size);
@@ -67,8 +78,7 @@ q.on('task:done', function (err, result, task) {
 
 q.on('empty', function () {
   console.log('========= EVENT: empty =========');
-  console.log('size:', this.size);
-  console.log('finishedCount:', this.finishedCount);
+  console.log('finished:', blue(this.finishedCount));
   console.log('========= //EVENT: empty =========');
 });
 
@@ -83,43 +93,50 @@ var getBigData = function getBigData () {
 };
 
 var i;
-var iterable = function iterable () {
-  setImmediate(function () {
-    var _batch = batch || 1;
+var action = function () {
+  var _batch = batch || 1;
 
-    for (i=0; i < _batch; i++); {
-      q.add({index: ++number, arr: getBigData()});
+  var taskData = {index: ++number, arr: getBigData()};
+
+  for (i=0; i < _batch; i++); {
+    q.add(taskData);
+  }
+  //q.add({index: ++number});
+  //q.add({index: ++number});
+  //q.add({index: ++number});
+  //q.add({index: ++number});
+  //console.log('========================');
+
+  //q.update({
+  //  //priority: q.options.defaultPriority - number
+  //}, { index: number }, 'qwe');
+
+  if (number < max) {
+    if (number == 5) {
+      _task = q.get(taskData);
     }
-    //q.add({index: ++number});
-    //q.add({index: ++number});
-    //q.add({index: ++number});
-    //q.add({index: ++number});
-    //console.log('========================');
+    //if (number % 100 == 0) {
+    //  console.log(number);
+    //}
+    iterable();
+  } else {
+    //q.tasks.forEach(function (value, key) {
+    //  console.log('key:', key);
+    //  console.log('value:', value);
+    //  console.log('============');
+    //});
 
-    //q.update({
-    //  //priority: q.options.defaultPriority - number
-    //}, { index: number }, 'qwe');
+    //console.log('q.tasks', q.tasks);
+    //q.clear();
+    //console.log('q.tasks', q.tasks);
 
-    if (number < max) {
-      //if (number % 100 == 0) {
-      //  console.log(number);
-      //}
-      iterable();
-    } else {
-      //q.tasks.forEach(function (value, key) {
-      //  console.log('key:', key);
-      //  console.log('value:', value);
-      //  console.log('============');
-      //});
-
-      //console.log('q.tasks', q.tasks);
-      //q.clear();
-      //console.log('q.tasks', q.tasks);
-
-      //cb();
-    }
-  });
-} ();
+    //cb();
+  }
+};
+function iterable () {
+  setImmediate(action);
+}
+iterable();
 
 
 return;
