@@ -69,7 +69,7 @@ q.on('task:start', function (task) {
   //}
 
   console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
-  //console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
+  //console.log('inProgress:', chalk.inverse(q.inProgressCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
   //console.log('========= EVENT: task:start =========');
   //console.log('task', task);
   //console.log('========= //EVENT: task:start =========');
@@ -81,7 +81,7 @@ q.on('task:done', function (/*err, result, task*/) {
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
     console.log(
-      'in progress:', blue(this.pendingCount) +';',
+      'in progress:', blue(this.inProgressCount) +';',
       'in queue:', blue(this.size) +';',
       'finished:', blue(this.finishedCount)
     );
