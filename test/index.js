@@ -19,24 +19,24 @@ var q = new Queue(function (obj, done) {
 
   //done(new Error('From callback'));
 
-  setTimeout(done, 700);
+  //setTimeout(done, 700);
 
   //setTimeout(function () {
   //  done();
   //  //done(null, obj);
   //}, 700);
 
-  //return Promise
-  //  .resolve()
-  //  .delay(700)
-  //  //.then(function () {
-  //  //  //return Promise.reject(new Error('From promise'));
-  //  //  throw new Error('its error');
-  //  //})
-  //  .then(function () {
-  //    return obj;
-  //  })
-  //;
+  return Promise
+    .resolve()
+    .delay(700)
+    //.then(function () {
+    //  //return Promise.reject(new Error('From promise'));
+    //  throw new Error('its error');
+    //})
+    .then(function () {
+      return obj;
+    })
+  ;
 });
 
 q.setOptions({
