@@ -28,7 +28,8 @@ var q = new Queue(function (obj, done) {
 
   return Promise
     .resolve()
-    .delay(700)
+    //.delay(_.random(500, 1000))
+    .delay(1000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -43,12 +44,15 @@ q.setOptions({
   //history: true,
   defaultPriority: 9000,
   concurrency: function () {
-    return '10';
+    return 5;
   },
   //throttle: function () {
   //  return 30 + ' ';
   //},
-  debounce: ' '+ 300
+  debounce: function () {
+    return 500;
+    return _.random(300, 1200);
+  }
 });
 
 //q.on('task:add', function (task) {
@@ -58,19 +62,19 @@ q.setOptions({
 //  //console.log('========= //EVENT: task:add =========');
 //});
 
-//q.on('task:start', function (task) {
-//  //if (task.args[0].index == 5) {
-//  //  console.log('5 task', task == _task);
-//  //  console.log('5 task', task.args == _task.args);
-//  //}
-//
-//  console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
-//  console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
-//  //console.log('========= EVENT: task:start =========');
-//  //console.log('task', task);
-//  //console.log('========= //EVENT: task:start =========');
-//  //task = null;
-//});
+q.on('task:start', function (task) {
+  //if (task.args[0].index == 5) {
+  //  console.log('5 task', task == _task);
+  //  console.log('5 task', task.args == _task.args);
+  //}
+
+  console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
+  //console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
+  //console.log('========= EVENT: task:start =========');
+  //console.log('task', task);
+  //console.log('========= //EVENT: task:start =========');
+  //task = null;
+});
 
 q.on('task:done', function (/*err, result, task*/) {
   //console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
@@ -100,7 +104,7 @@ q.on('task:done', function (/*err, result, task*/) {
 
 var number = 0;
 var batch = 0;
-var max = 1000;
+var max = 100;
 
 var getBigData = function getBigData () {
   //return [];
