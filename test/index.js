@@ -2,6 +2,8 @@
 //return;
 
 var Queue   = require('../lib'),
+    _       = require('lodash'),
+    nextTick = require('next-tick'),
     Promise = require('bluebird'),
     logTime = require('../lib/log-time'),
     chalk   = require('chalk'),
@@ -9,7 +11,6 @@ var Queue   = require('../lib'),
     green = chalk.green
 ;
 
-var _task;
 
 var q = new Queue(function (obj, done) {
   //console.log('========= QUEUE fn =========');
@@ -18,55 +19,68 @@ var q = new Queue(function (obj, done) {
 
   //done(new Error('From callback'));
 
-  return Promise
-    .resolve()
-    .delay(1000)
-    //.then(function () {
-    //  //return Promise.reject(new Error('From promise'));
-    //  throw new Error('its error');
-    //})
-    .then(function () {
-      return obj;
-    })
-  ;
+  setTimeout(done, 700);
+
+  //setTimeout(function () {
+  //  done();
+  //  //done(null, obj);
+  //}, 700);
+
+  //return Promise
+  //  .resolve()
+  //  .delay(700)
+  //  //.then(function () {
+  //  //  //return Promise.reject(new Error('From promise'));
+  //  //  throw new Error('its error');
+  //  //})
+  //  .then(function () {
+  //    return obj;
+  //  })
+  //;
 });
 
 q.setOptions({
   //history: true,
   defaultPriority: 9000,
   concurrency: function () {
-    return '3';
+    return '10';
   },
   //throttle: function () {
   //  return 30 + ' ';
   //},
-  debounce: ' '+ 500
+  debounce: ' '+ 300
 });
 
 //q.on('task:add', function (task) {
-//  console.log('========= EVENT: task:add =========');
-//  console.log.apply(console, ['args:'].concat(arguments));
-//  console.log('========= //EVENT: task:add =========');
+//  //console.log('add');
+//  //console.log('========= EVENT: task:add =========');
+//  //console.log.apply(console, ['args:'].concat(arguments));
+//  //console.log('========= //EVENT: task:add =========');
 //});
 
-q.on('task:start', function (task) {
-  if (task.args[0].index == 5) {
-    console.log('5 task', task == _task);
-    console.log('5 task', task.args == _task.args);
-  }
+//q.on('task:start', function (task) {
+//  //if (task.args[0].index == 5) {
+//  //  console.log('5 task', task == _task);
+//  //  console.log('5 task', task.args == _task.args);
+//  //}
+//
+//  console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
+//  console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
+//  //console.log('========= EVENT: task:start =========');
+//  //console.log('task', task);
+//  //console.log('========= //EVENT: task:start =========');
+//  //task = null;
+//});
 
-  console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
-  console.log('inProgress:', chalk.inverse(q.pendingCount) +';', 'in queue:', chalk.inverse(q.size));
-  //console.log('========= EVENT: task:start =========');
-  //console.log('task', task);
-  //console.log('========= //EVENT: task:start =========');
-});
-
-q.on('task:done', function (err, result, task) {
-  console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
+q.on('task:done', function (/*err, result, task*/) {
+  //console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
-//    console.log('inProgress:', q.pendingCount +';', 'all:', q.size);
+    console.log(
+      'in progress:', blue(this.pendingCount) +';',
+      'in queue:', blue(this.size) +';',
+      'finished:', blue(this.finishedCount)
+    );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
 ////  console.log('err, result', err, result);
@@ -74,18 +88,19 @@ q.on('task:done', function (err, result, task) {
 ////  ////console.log('q.tasks', q.tasks);
 ////  ////console.log('q.priorities', q.priorities);
 ////  console.log('========= //EVENT: task:done =========');
+//  task = null;
 });
 
-q.on('empty', function () {
-  console.log('========= EVENT: empty =========');
-  console.log('finished:', blue(this.finishedCount));
-  console.log('========= //EVENT: empty =========');
-});
+//q.on('empty', function () {
+//  console.log('========= EVENT: empty =========');
+//  console.log('finished:', blue(this.finishedCount));
+//  console.log('========= //EVENT: empty =========');
+//});
 
 
 var number = 0;
 var batch = 0;
-var max = 500;
+var max = 1000;
 
 var getBigData = function getBigData () {
   //return [];
@@ -96,10 +111,10 @@ var i;
 var action = function () {
   var _batch = batch || 1;
 
-  var taskData = {index: ++number, arr: getBigData()};
+  //var taskData = {index: ++number, arr: getBigData()};
 
-  for (i=0; i < _batch; i++); {
-    q.add(taskData);
+  for (i=0; i < _batch; i++) {
+    q.add({index: ++number, arr: getBigData()});
   }
   //q.add({index: ++number});
   //q.add({index: ++number});
@@ -112,9 +127,9 @@ var action = function () {
   //}, { index: number }, 'qwe');
 
   if (number < max) {
-    if (number == 5) {
-      _task = q.get(taskData);
-    }
+    //if (number == 5) {
+    //  _task = q.get(taskData);
+    //}
     //if (number % 100 == 0) {
     //  console.log(number);
     //}
