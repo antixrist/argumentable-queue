@@ -29,7 +29,7 @@ var q = new Queue(function (obj, done) {
   return Promise
     .resolve()
     //.delay(_.random(500, 1000))
-    .delay(1000)
+    .delay(3000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -50,7 +50,7 @@ q.setOptions({
   //  return 30 + ' ';
   //},
   debounce: function () {
-    return 500;
+    return 2000;
     return _.random(300, 1200);
   }
 });
