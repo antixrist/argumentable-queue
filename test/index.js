@@ -88,7 +88,7 @@ q.on('task:done', function (err, result, task) {
     `${Queue.STATUS_NEW}: ${blue(stats[Queue.STATUS_NEW])};`,
     `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
     `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
-    `all: ${blue(stats.all)}`
+    `all: ${blue(this.size)}`
   );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
@@ -107,60 +107,47 @@ q.on('task:done', function (err, result, task) {
 //});
 
 
-var number = 0;
-var batch = 0;
-var max = 100;
+var count    = 100;
+var batch    = 0;
+var interval = 200;
 
 var getBigData = function getBigData () {
   //return [];
   return (new Array(1000000)).join('*');
 };
 
-var i;
-var action = function () {
-  var _batch = batch || 1;
+var index = 0;
+function iterable (cb) {
+  Promise
+    .delay(interval)
+    .then(function () {
+      var _batch = batch || 1;
 
-  //var taskData = {index: ++number, arr: getBigData()};
+      //var taskData = {index: ++index, arr: getBigData()};
 
-  for (i=0; i < _batch; i++) {
-    q.add({index: ++number, arr: getBigData()});
-  }
-  //q.add({index: ++number});
-  //q.add({index: ++number});
-  //q.add({index: ++number});
-  //q.add({index: ++number});
-  //console.log('========================');
+      for (var i=0; i < _batch; i++) {
+        q.add({index: ++index, arr: getBigData()});
+      }
+      //q.add({index: ++index});
+      //q.add({index: ++index});
+      //q.add({index: ++index});
+      //q.add({index: ++index});
+      //console.log('========================');
 
-  //q.update({
-  //  //priority: q.options.defaultPriority - number
-  //}, { index: number }, 'qwe');
+      //q.update({
+      //  //priority: q.options.defaultPriority - index
+      //}, { index: index }, 'qwe');
 
-  if (number < max) {
-    //if (number == 5) {
-    //  _task = q.get(taskData);
-    //}
-    //if (number % 100 == 0) {
-    //  console.log(number);
-    //}
-    iterable();
-  } else {
-    //q.tasks.forEach(function (value, key) {
-    //  console.log('key:', key);
-    //  console.log('value:', value);
-    //  console.log('============');
-    //});
-
-    //console.log('q.tasks', q.tasks);
-    //q.clear();
-    //console.log('q.tasks', q.tasks);
-
-    //cb();
-  }
-};
-function iterable () {
-  setImmediate(action);
+      if (index < count) {
+        _.isFunction(cb) && cb();
+      }
+    })
+  ;
 }
-iterable();
+
+var cb = function cb () {
+  iterable(cb);
+} ();
 
 
 return;
