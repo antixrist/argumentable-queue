@@ -9,6 +9,7 @@ var Queue   = require('../lib'),
     Promise = require('bluebird'),
     logTime = require('../lib/log-time'),
     chalk   = require('chalk'),
+    inverse = chalk.inverse,
     blue = chalk.blue,
     green = chalk.green
 ;
@@ -30,8 +31,8 @@ var q = new Queue(function (obj, done) {
 
   return Promise
     .resolve()
-    //.delay(_.random(500, 1000))
-    .delay(3000)
+    .delay(_.random(20, 40))
+    //.delay(3000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -48,13 +49,13 @@ q.setOptions({
   concurrency: function () {
     return 10;
   },
-  //throttle: function () {
-  //  return 500;
-  //},
-  debounce: function () {
-    return 2000;
-    return _.random(300, 1200);
-  }
+  throttle: function () {
+    return 300;
+  },
+  //debounce: function () {
+  //  return 2000;
+  //  return _.random(300, 1200);
+  //}
 });
 
 //q.on('task:add', function (task) {
@@ -64,6 +65,7 @@ q.setOptions({
 //  //console.log('========= //EVENT: task:add =========');
 //});
 
+var tstart;
 q.on('task:start', function (task) {
   //if (task.args[0].index == 5) {
   //  console.log('5 task', task == _task);
@@ -71,6 +73,11 @@ q.on('task:start', function (task) {
   //}
 
   console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
+
+  tstart = tstart || Date.now();
+
+  console.log(inverse(`time between tasks ${green(Date.now() - tstart)}ms`));
+  tstart = Date.now();
 
   var stats = this.stats;
   console.log(
@@ -94,7 +101,7 @@ q.on('task:done', function (err, result, task) {
   //console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
-  console.log(green('['+ task.start +']'), '#'+ green(task.index));
+  console.log(green('['+ task.start +']'), `#${green(task.index)}`, `(${green(task.time)}ms)`);
 
   var stats = this.stats;
   console.log(
@@ -105,7 +112,6 @@ q.on('task:done', function (err, result, task) {
     `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
     `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
     `size: ${blue(this.size)}`,
-    `task time: ${green(task.time)};`,
     '\n===== //DONE ====='
   );
 //  //}
