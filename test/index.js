@@ -31,7 +31,7 @@ var q = new Queue(function (obj, done) {
   return Promise
     .resolve()
     //.delay(_.random(500, 1000))
-    .delay(2000)
+    .delay(3000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -46,13 +46,13 @@ q.setOptions({
   history: true,
   defaultPriority: 9000,
   concurrency: function () {
-    return 5;
+    return 10;
   },
   //throttle: function () {
   //  return 500;
   //},
   debounce: function () {
-    return 3000;
+    return 2000;
     return _.random(300, 1200);
   }
 });
@@ -71,6 +71,18 @@ q.on('task:start', function (task) {
   //}
 
   console.log(blue('['+ task.start +']'), '#'+ blue(task.index));
+
+  var stats = this.stats;
+  console.log(
+    '===== START =====\n',
+    `avg time: ${blue(stats.avgTime.toFixed(0))};`,
+    `total time: ${blue(stats.totalTime)};`,
+    `${Queue.STATUS_NEW}: ${blue(stats[Queue.STATUS_NEW])};`,
+    `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
+    `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
+    `size: ${blue(this.size)}`,
+    '\n===== //START ====='
+  );
   //console.log('inProgress:', chalk.inverse(q.inProgressCount) +';', 'in queue:', chalk.inverse(_.size(q.tasks)));
   //console.log('========= EVENT: task:start =========');
   //console.log('task', task);
@@ -83,15 +95,18 @@ q.on('task:done', function (err, result, task) {
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
   console.log(green('['+ task.start +']'), '#'+ green(task.index));
+
   var stats = this.stats;
   console.log(
-    `task time: ${blue(task.time)};`,
+    '===== DONE =====\n',
     `avg time: ${blue(stats.avgTime.toFixed(0))};`,
     `total time: ${blue(stats.totalTime)};`,
     `${Queue.STATUS_NEW}: ${blue(stats[Queue.STATUS_NEW])};`,
     `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
     `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
-    `size: ${blue(this.size)}`
+    `size: ${blue(this.size)}`,
+    `task time: ${green(task.time)};`,
+    '\n===== //DONE ====='
   );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
