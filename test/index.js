@@ -87,7 +87,8 @@ q.on('task:done', function (err, result, task) {
     'in progress:', blue(stats.pending) +';',
     'in queue:', blue(stats.new) +';',
     'finished:', blue(stats.finished),
-    'all:', blue(stats.all)
+    'all:', blue(stats.all) +';',
+    'time:', blue(stats.time)
   );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
