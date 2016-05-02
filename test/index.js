@@ -83,12 +83,12 @@ q.on('task:done', function (err, result, task) {
   console.log(green('['+ task.start +']'), '#'+ green(task.index));
   var stats = this.stats;
   console.log(
-    'task time:', blue(task.time) +';',
-    'in progress:', blue(stats.pending) +';',
-    'in queue:', blue(stats.new) +';',
-    'finished:', blue(stats.finished),
-    'all:', blue(stats.all) +';',
-    'time:', blue(stats.time)
+    `task time: ${blue(task.time)};`,
+    `all time: ${blue(stats.time)};`,
+    `${Queue.STATUS_NEW}: ${blue(stats[Queue.STATUS_NEW])};`,
+    `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
+    `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
+    `all: ${blue(stats.all)}`
   );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
