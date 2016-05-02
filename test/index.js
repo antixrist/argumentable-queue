@@ -58,7 +58,7 @@ q.setOptions({
 });
 
 //q.on('task:add', function (task) {
-//  //console.log('add');
+//  console.log('add', green(task.index), task.key);
 //  //console.log('========= EVENT: task:add =========');
 //  //console.log.apply(console, ['args:'].concat(arguments));
 //  //console.log('========= //EVENT: task:add =========');
@@ -112,7 +112,7 @@ q.on('task:done', function (err, result, task) {
 
 var count    = 100;
 var batch    = 0;
-var interval = 500;
+var interval = 0;
 
 var getBigData = function getBigData () {
   //return [];
