@@ -86,11 +86,12 @@ q.on('task:done', function (err, result, task) {
   var stats = this.stats;
   console.log(
     `task time: ${blue(task.time)};`,
-    `all time: ${blue(stats.time)};`,
+    `avg time: ${blue(stats.avgTime.toFixed(0))};`,
+    `total time: ${blue(stats.totalTime)};`,
     `${Queue.STATUS_NEW}: ${blue(stats[Queue.STATUS_NEW])};`,
     `${Queue.STATUS_PENDING}: ${blue(stats[Queue.STATUS_PENDING])};`,
     `${Queue.STATUS_FINISHED}: ${blue(stats[Queue.STATUS_FINISHED])};`,
-    `all: ${blue(this.size)}`
+    `size: ${blue(this.size)}`
   );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
@@ -111,7 +112,7 @@ q.on('task:done', function (err, result, task) {
 
 var count    = 100;
 var batch    = 0;
-var interval = 200;
+var interval = 500;
 
 var getBigData = function getBigData () {
   //return [];
