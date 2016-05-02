@@ -3,8 +3,33 @@
   "version": "0.0.5",
   "description": "",
   "main": "index.js",
-  "author": "antixrist",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antixrist/queue-universal.git"
+  },
+  "keywords": [
+    "queue",
+    "task",
+    "job",
+    "concurrent",
+    "concurrency",
+    "sync",
+    "async",
+    "synchronous",
+    "asynchronous",
+    "throttle",
+    "debounce"
+  ],
+  "author": {
+    "name": "antixrist",
+    "email": "ya.antixrist@gmail.com",
+    "url": "antixrist.ru"
+  },
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/antixrist/queue-universal/issues"
+  },
+  "homepage": "https://github.com/antixrist/queue-universal#readme",
   "dependencies": {
     "async-done": "^1.2.0",
     "emmiter": "^0.0.4",
