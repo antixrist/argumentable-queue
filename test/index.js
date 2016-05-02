@@ -6,7 +6,7 @@
 var Queue   = require('../lib'),
     _       = require('lodash'),
     nextTick = require('next-tick'),
-    //Promise = require('bluebird'),
+    Promise = require('bluebird'),
     logTime = require('../lib/log-time'),
     chalk   = require('chalk'),
     blue = chalk.blue,
