@@ -29,7 +29,7 @@ var q = new Queue(function (obj, done) {
   return Promise
     .resolve()
     //.delay(_.random(500, 1000))
-    .delay(3000)
+    .delay(2000)
     //.then(function () {
     //  //return Promise.reject(new Error('From promise'));
     //  throw new Error('its error');
@@ -41,16 +41,16 @@ var q = new Queue(function (obj, done) {
 });
 
 q.setOptions({
-  //history: true,
+  history: true,
   defaultPriority: 9000,
   concurrency: function () {
     return 5;
   },
   //throttle: function () {
-  //  return 30 + ' ';
+  //  return 500;
   //},
   debounce: function () {
-    return 2000;
+    return 3000;
     return _.random(300, 1200);
   }
 });
@@ -76,15 +76,19 @@ q.on('task:start', function (task) {
   //task = null;
 });
 
-q.on('task:done', function (/*err, result, task*/) {
+q.on('task:done', function (err, result, task) {
   //console.log(green('['+ q.lastTaskTimes.end +']'), '#'+ blue(task.index));
 //  //if (task.index % 100 == 0) {
 //    console.log('#'+ task.index +';', 'time:', task.time);
-    console.log(
-      'in progress:', blue(this.inProgressCount) +';',
-      'in queue:', blue(this.size) +';',
-      'finished:', blue(this.finishedCount)
-    );
+  console.log(green('['+ task.start +']'), '#'+ green(task.index));
+  var stats = this.stats;
+  console.log(
+    'task time:', blue(task.time) +';',
+    'in progress:', blue(stats.pending) +';',
+    'in queue:', blue(stats.new) +';',
+    'finished:', blue(stats.finished),
+    'all:', blue(stats.all)
+  );
 //  //}
 ////  console.log('========= EVENT: task:done =========');
 ////  console.log('err, result', err, result);
