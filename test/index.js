@@ -1,3 +1,5 @@
+'use strict';
+
 //require('fs').writeFileSync(require('path').join(__dirname, 'tmp.txt'), (new Array(1000000)).join('*'));
 //return;
 
@@ -123,10 +125,10 @@ function iterable (cb) {
     .then(function () {
       var _batch = batch || 1;
 
-      //var taskData = {index: ++index, arr: getBigData()};
-
-      for (var i=0; i < _batch; i++) {
-        q.add({index: ++index, arr: getBigData()});
+      let taskData = {index: ++index, arr: getBigData()};
+      for (let i = 0; i < _batch; i++) {
+        q.add(taskData);
+        //q.add({index: ++index, arr: getBigData()});
       }
       //q.add({index: ++index});
       //q.add({index: ++index});
