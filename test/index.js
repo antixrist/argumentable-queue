@@ -102,10 +102,10 @@ q.on('task:done', function (err, result, task) {
 //  task = null;
 });
 
-//q.on('empty', function () {
-//  console.log('========= EVENT: empty =========');
+//q.on('drain', function () {
+//  console.log('========= EVENT: drain =========');
 //  console.log('finished:', blue(this.finishedCount));
-//  console.log('========= //EVENT: empty =========');
+//  console.log('========= //EVENT: drain =========');
 //});
 
 
