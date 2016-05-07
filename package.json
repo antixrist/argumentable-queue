@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antixrist/queue-universal.git"
+    "url": "git+https://github.com/antixrist/argumentable-queue.git"
   },
   "keywords": [
     "queue",
@@ -27,9 +27,9 @@
   },
   "license": "WTFPL",
   "bugs": {
-    "url": "https://github.com/antixrist/queue-universal/issues"
+    "url": "https://github.com/antixrist/argumentable-queue/issues"
   },
-  "homepage": "https://github.com/antixrist/queue-universal#readme",
+  "homepage": "https://github.com/antixrist/argumentable-queue#readme",
   "dependencies": {
     "async-done": "^1.2.0",
     "emmiter": "^0.0.4",
